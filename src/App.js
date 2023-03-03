@@ -1,5 +1,10 @@
+import react, { useState, useEffect } from "react";
 import "./App.css";
+import Axios from "axios";
 import styled from "styled-components";
+import MovieComponent from "./components/MovieComponent";
+
+export const API_KEY = "e61dda92";
 
 const Container = styled.div`
   display: flex;
@@ -64,6 +69,23 @@ const Placeholder = styled.img`
 `;
 
 function App() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [movielist, setMovielist] = useState([]);
+  const [selectedmovie, setSelectedmovie] = useState(null);
+  const [timeoutId, setTimeoutId] = useState(null);
+
+  useEffect(() => {
+    fetchData("batman");
+  });
+
+  const fetchData = async (searchString) => {
+    const response = await Axios.get(
+      `https://www.omdbapi.com/?s=${searchString}&apikey=${API_KEY}`
+    );
+    setMovielist(response.data.Search);
+    console.log(response.data);
+  };
+
   return (
     <Container>
       <Header>
@@ -76,6 +98,20 @@ function App() {
           <SearchInput placeholder="Search for a movie" />
         </SearchBox>
       </Header>
+      {/* {selectedmovie && <MovieInfoComponent selectedmovie={selectedmovie} />} */}
+      <MovieListContainer>
+        {movielist?.length ? (
+          movielist.map((movie, index) => (
+            <MovieComponent
+              key={index}
+              movie={movie}
+              setSelectedmovie={setSelectedmovie}
+            />
+          ))
+        ) : (
+          <Placeholder src="/movie/movie-icon.svg" />
+        )}
+      </MovieListContainer>
     </Container>
   );
 }

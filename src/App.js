@@ -87,7 +87,7 @@ function App() {
     setSelectedmovie("");
     clearTimeout(timeoutId);
     updateSearchQuery(e.target.value);
-    const timeout = setTimeout(() => fetchData(e.target.value), 500);
+    const timeout = setTimeout(() => fetchData(e.target.value), 200);
     updateTimeoutId(timeout);
   };
 

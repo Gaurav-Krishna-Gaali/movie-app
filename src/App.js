@@ -1,8 +1,8 @@
-import react, { useState, useEffect } from "react";
-import "./App.css";
+import React, { useState } from "react";
 import Axios from "axios";
 import styled from "styled-components";
 import MovieComponent from "./components/MovieComponent";
+import MovieInfoComponent from "./components/MovieInfoComponent";
 
 export const API_KEY = "e61dda92";
 
@@ -69,39 +69,53 @@ const Placeholder = styled.img`
 `;
 
 function App() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [movielist, setMovielist] = useState([]);
-  const [selectedmovie, setSelectedmovie] = useState(null);
-  const [timeoutId, setTimeoutId] = useState(null);
+  const [searchQuery, updateSearchQuery] = useState("");
 
-  useEffect(() => {
-    fetchData("batman");
-  });
+  const [movieList, updateMovieList] = useState([]);
+  const [selectedMovie, setSelectedmovie] = useState();
+
+  const [timeoutId, updateTimeoutId] = useState();
 
   const fetchData = async (searchString) => {
     const response = await Axios.get(
       `https://www.omdbapi.com/?s=${searchString}&apikey=${API_KEY}`
     );
-    setMovielist(response.data.Search);
-    console.log(response.data);
+    updateMovieList(response.data.Search);
+  };
+
+  const onTextChange = (e) => {
+    setSelectedmovie("");
+    clearTimeout(timeoutId);
+    updateSearchQuery(e.target.value);
+    const timeout = setTimeout(() => fetchData(e.target.value), 500);
+    updateTimeoutId(timeout);
   };
 
   return (
     <Container>
       <Header>
         <AppName>
-          <MovieImage src="/movie/movie-icon.svg" />
+          <MovieImage src="/react-movie-app/movie-icon.svg" />
           React Movie App
         </AppName>
         <SearchBox>
-          <SearchIcon src="/movie/search-icon.svg" />
-          <SearchInput placeholder="Search for a movie" />
+          <SearchIcon src="/react-movie-app/search-icon.svg" />
+          <SearchInput
+            placeholder="Search Movie"
+            value={searchQuery}
+            onChange={onTextChange}
+          />
         </SearchBox>
       </Header>
-      {/* {selectedmovie && <MovieInfoComponent selectedmovie={selectedmovie} />} */}
+      {selectedMovie && (
+        <MovieInfoComponent
+          selectedMovie={selectedMovie}
+          setSelectedmovie={setSelectedmovie}
+        />
+      )}
       <MovieListContainer>
-        {movielist?.length ? (
-          movielist.map((movie, index) => (
+        {movieList?.length ? (
+          movieList.map((movie, index) => (
             <MovieComponent
               key={index}
               movie={movie}
@@ -109,7 +123,7 @@ function App() {
             />
           ))
         ) : (
-          <Placeholder src="/movie/movie-icon.svg" />
+          <Placeholder src="/react-movie-app/movie-icon.svg" />
         )}
       </MovieListContainer>
     </Container>

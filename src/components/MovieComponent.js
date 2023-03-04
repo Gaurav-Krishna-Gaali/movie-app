@@ -36,25 +36,23 @@ const MovieInfo = styled.span`
   text-transform: capitalize;
   text-overflow: ellipsis;
 `;
-
 const MovieComponent = (props) => {
-  const { title, Year, imbdID, Type, Poster } = props.movie;
+  const { Title, Year, imdbID, Type, Poster } = props.movie;
 
   return (
     <MovieContainer
       onClick={() => {
-        props.setSelectedmovie(imbdID);
+        props.setSelectedmovie(imdbID);
         window.scrollTo({ top: 0, behavior: "smooth" });
       }}
     >
-      <CoverImage src={Poster} alt={title} />
-      <MovieName>{title}</MovieName>
+      <CoverImage src={Poster} alt={Title} />
+      <MovieName>{Title}</MovieName>
       <InfoColumn>
-        <MovieInfo>Year: {Year}</MovieInfo>
-        <MovieInfo>Type: {Type}</MovieInfo>
+        <MovieInfo>Year : {Year}</MovieInfo>
+        <MovieInfo>Type : {Type}</MovieInfo>
       </InfoColumn>
     </MovieContainer>
   );
 };
-
 export default MovieComponent;

@@ -1,4 +1,4 @@
-# Invoice Generator - React App
+React Movie App - React App
 
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 
@@ -10,7 +10,7 @@ https://movie-app-self-six.vercel.app/
 
 ### Screenshots
 
-<img src="https://i.imgur.com/YK4tjub_d.webp?maxwidth=760&fidelity=grand" style="max-width: 100px; width: 100%; height: auto;">
+<img src="https://i.imgur.com/thbfTio.png" style="max-width: 100px; width: 100%; height: auto;">
 <img src="https://i.imgur.com/cnzRbzJ.png" style="max-width: 100px; width: 100%; height: auto;">
 
 ### Installation

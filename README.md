@@ -11,7 +11,7 @@ https://movie-app-self-six.vercel.app/
 ### Screenshots
 
 <img src="https://i.imgur.com/YK4tjub_d.webp?maxwidth=760&fidelity=grand" style="max-width: 100px; width: 100%; height: auto;">
-<img src="https://imgur.com/a/Xo43da0" style="max-width: 100px; width: 100%; height: auto;">
+<img src="https://i.imgur.com/cnzRbzJ.png" style="max-width: 100px; width: 100%; height: auto;">
 
 ### Installation
 

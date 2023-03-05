@@ -16,7 +16,7 @@ https://movie-app-self-six.vercel.app/
 ### Installation
 
 ```
-git clone https://github.com/johnuberbacher/invoice-generator
+git clone https://github.com/Gaurav-Krishna-Gaali/movie-app.git
 
 npm install
 

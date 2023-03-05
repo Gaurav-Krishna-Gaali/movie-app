@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import styled from "styled-components";
 import MovieComponent from "./components/MovieComponent";
 import MovieInfoComponent from "./components/MovieInfoComponent";
+import TextEffect from "./components/TextEffect";
 
 export const API_KEY = "e61dda92";
 
@@ -14,6 +15,13 @@ const AppName = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+`;
+const FavSection = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5em;
+  font-weight: bold;
 `;
 const Header = styled.div`
   background-color: black;
@@ -73,6 +81,7 @@ function App() {
 
   const [movieList, updateMovieList] = useState([]);
   const [selectedMovie, setSelectedmovie] = useState();
+  const [favourites, setFavourites] = useState([]);
 
   const [timeoutId, updateTimeoutId] = useState();
 
@@ -91,6 +100,39 @@ function App() {
     updateTimeoutId(timeout);
   };
 
+  useEffect(() => {
+    const movieFavourites = JSON.parse(
+      localStorage.getItem("react-movie-app-favourites")
+    );
+
+    if (movieFavourites) {
+      setFavourites(movieFavourites);
+    }
+  }, []);
+
+  const saveToLocalStorage = (items) => {
+    localStorage.setItem("react-movie-app-favourites", JSON.stringify(items));
+  };
+
+  const addFavouriteMovie = (movie) => {
+    const newFavouriteList = [...favourites, movie];
+    if (favourites.includes(movie)) {
+      return;
+    } else {
+      setFavourites(newFavouriteList);
+      saveToLocalStorage(newFavouriteList);
+    }
+  };
+
+  const removeFavouriteMovie = (movie) => {
+    const newFavouriteList = favourites.filter(
+      (favourite) => favourite.imdbID !== movie.imdbID
+    );
+
+    setFavourites(newFavouriteList);
+    saveToLocalStorage(newFavouriteList);
+  };
+
   return (
     <Container>
       <Header>
@@ -107,6 +149,36 @@ function App() {
           />
         </SearchBox>
       </Header>
+      {/* Favourites */}
+
+      {/* {favourites.length > 0 ? (
+        <FavSection>My Favourites</FavSection>
+      ) : (
+        <FavSection>No Favourites currently selected</FavSection>
+      )} */}
+      {searchQuery === "" && (
+        <TextEffect
+          text={
+            favourites.length > 0
+              ? "My Favourites 🎬"
+              : "No Favourites currently selected 🔍"
+          }
+        />
+      )}
+      {searchQuery === "" && (
+        <MovieListContainer>
+          {favourites.map((movie, index) => (
+            <MovieComponent
+              key={index}
+              movie={movie}
+              addFavouriteMovie={addFavouriteMovie}
+              removeFavouriteMovie={removeFavouriteMovie}
+              favourites={favourites}
+            />
+          ))}
+        </MovieListContainer>
+      )}
+
       {selectedMovie && (
         <MovieInfoComponent
           selectedMovie={selectedMovie}
@@ -120,6 +192,9 @@ function App() {
               key={index}
               movie={movie}
               setSelectedmovie={setSelectedmovie}
+              addFavouriteMovie={addFavouriteMovie}
+              removeFavouriteMovie={removeFavouriteMovie}
+              favourites={favourites}
             />
           ))
         ) : (

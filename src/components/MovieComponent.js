@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import AddFavourite from "./AddFavorites";
+import RemoveFavourites from "./RemoveFavorites";
 
 const MovieContainer = styled.div`
   display: flex;
@@ -16,7 +18,7 @@ const CoverImage = styled.img`
 const MovieName = styled.span`
   font-size: 18px;
   font-weight: 600;
-  color: black;
+  color: white;
   margin: 15px 0;
   white-space: nowrap;
   overflow: hidden;
@@ -26,6 +28,16 @@ const InfoColumn = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+`;
+const InfoFavColumn = styled.div`
+  display: flex;
+  flex-direction: row;
+  background: black;
+  color: white;
+  justify-content: space-around;
+  border-radius: 0 0 10px 10px;
+  padding: 10px;
+  cursor: pointer;
 `;
 const MovieInfo = styled.span`
   font-size: 16px;
@@ -38,21 +50,58 @@ const MovieInfo = styled.span`
 `;
 const MovieComponent = (props) => {
   const { Title, Year, imdbID, Type, Poster } = props.movie;
+  console.log("props.favourite", props.favourites);
 
   return (
-    <MovieContainer
-      onClick={() => {
-        props.setSelectedmovie(imdbID);
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }}
-    >
-      <CoverImage src={Poster} alt={Title} />
-      <MovieName>{Title}</MovieName>
-      <InfoColumn>
-        <MovieInfo>Year : {Year}</MovieInfo>
-        <MovieInfo>Type : {Type}</MovieInfo>
-      </InfoColumn>
-    </MovieContainer>
+    <div className="">
+      <MovieContainer
+        onClick={() => {
+          props.setSelectedmovie(imdbID);
+          console.log("props.movie", props.movie);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
+      >
+        <CoverImage src={Poster} alt={Title} />
+        <MovieName>{Title}</MovieName>
+        <InfoColumn>
+          <MovieInfo>Year : {Year}</MovieInfo>
+          <MovieInfo>Type : {Type}</MovieInfo>
+        </InfoColumn>
+      </MovieContainer>
+      {setTimeout(200) && props.favourites.includes(props.movie) ? (
+        <InfoFavColumn
+          onClick={() => {
+            props.removeFavouriteMovie(props.movie);
+            console.log("props.movie", props.movie);
+          }}
+        >
+          <RemoveFavourites />
+        </InfoFavColumn>
+      ) : (
+        <InfoFavColumn
+          onClick={() => {
+            props.addFavouriteMovie(props.movie);
+            console.log("props.movie", props.movie);
+          }}
+        >
+          <AddFavourite />
+        </InfoFavColumn>
+      )}
+      {/* <InfoFavColumn
+        onClick={() => {
+          props.favourites.includes(props.movie)
+            ? props.removeFavouriteMovie(props.movie)
+            : props.addFavouriteMovie(props.movie);
+          console.log("props.movie", props.movie);
+        }}
+      >
+        {props.favourites.includes(props.movie) ? (
+          <RemoveFavourites />
+        ) : (
+          <AddFavourite />
+        )}
+      </InfoFavColumn> */}
+    </div>
   );
 };
 export default MovieComponent;
